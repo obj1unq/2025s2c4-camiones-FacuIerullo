@@ -4,7 +4,8 @@ object knightRider {
 }
 
 object arenaAGranel {
-  method peso(kilogramos) {return kilogramos}
+  var property kilogramos = 1
+  method peso() {return kilogramos}
   method nivelPeligrosidad() {return 1 }
 }
 
@@ -30,20 +31,52 @@ object bumblebee {
 }
 
 object paqueteDeLadrillos {
-  method peso(cantidad) { return cantidad * 2}
+  var property cantidad = 1
+  method peso() { return cantidad * 2}
   method nivelPeligrosidad() { return 2 }
 }
 
 object bateriaAntiaerea {
-	var property tieneMisiles = false
+	var tieneMisiles = false
 
-	method cargarMisiles() { self.tieneMisiles(true) }
+	method cargarMisiles() {
+		tieneMisiles = true
+	}
 
 	method peso() { return if (tieneMisiles) 300 else 200 }
-	method peligrosidad() {	return if (tieneMisiles) 100 else 0 }
+	method nivelPeligrosidad() {	return if (tieneMisiles) 100 else 0 }
 }
 
 object residuosRadioactivos {
-  method peso(kilogramos) {return kilogramos}
+  var property kilogramos = 1
+  method peso() {return kilogramos}
   method nivelPeligrosidad() {return 200 }
+}
+
+object contenedorPortuario {
+  var property cosas = #{}
+
+  method pesoTotalDeCosas(){
+	var suma = 0
+	cosas.forEach({cosas => suma = suma + cosas.peso()})
+	return suma
+  }
+
+  method peso() {return 100 + self.pesoTotalDeCosas()}
+  method nivelPeligrosidad(){
+	return if(cosas.size() >= 1){
+	cosas.find({cosas => cosas.nivelPeligrosidad().max()})
+   } else{
+	0
+   }}
+}
+
+object embalajeDeSeguridad {
+	var cosaEmbalada = null
+  method embalar(cosa) {
+	cosaEmbalada = cosa
+  }
+
+  method peso(){ return cosaEmbalada.peso()}
+  method nivelPeligrosidad(){ return cosaEmbalada.nivelPeligrosidad() / 2}
 }
