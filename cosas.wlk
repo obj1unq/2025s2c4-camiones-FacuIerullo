@@ -5,14 +5,15 @@ object knightRider {
 
 object arenaAGranel {
   var property kilogramos = 1
-  method peso() {return kilogramos}
-  method nivelPeligrosidad() {return 1 }
+
+  method peso() { return kilogramos }
+  method nivelPeligrosidad() { return 1 }
 }
 
 object bumblebee {
   var estado = "auto"
 
-  method esAuto() {return estado == "auto"}
+  method esAuto() { return estado == "auto" }
   
   method transformarse() {
 	if(self.esAuto()){
@@ -21,13 +22,7 @@ object bumblebee {
   }
 
   method peso() { return 800 }
-  method nivelPeligrosidad() { 
-	if(self.esAuto()){
-	    return 15
-	} else{
-		return 30
-	}
-   }
+  method nivelPeligrosidad() { return if(self.esAuto()) 15 else 30 }
 }
 
 object paqueteDeLadrillos {
@@ -49,8 +44,8 @@ object bateriaAntiaerea {
 
 object residuosRadioactivos {
   var property kilogramos = 1
-  method peso() {return kilogramos}
-  method nivelPeligrosidad() {return 200 }
+  method peso() { return kilogramos }
+  method nivelPeligrosidad() { return 200 }
 }
 
 object contenedorPortuario {
@@ -64,15 +59,14 @@ object contenedorPortuario {
 
   method peso() {return 100 + self.pesoTotalDeCosas()}
   method nivelPeligrosidad(){
-	return if(cosas.size() >= 1){
-	cosas.find({cosas => cosas.nivelPeligrosidad().max()})
-   } else{
-	0
-   }}
+    const cosasPeligrosidad = cosas.map({cosa => cosa.nivelPeligrosidad()})
+    return if(cosas.size() >= 1)cosasPeligrosidad.max() else 0
+  }
 }
 
 object embalajeDeSeguridad {
 	var cosaEmbalada = null
+  
   method embalar(cosa) {
 	cosaEmbalada = cosa
   }

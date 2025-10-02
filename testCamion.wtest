@@ -128,4 +128,36 @@ describe "Testeo de ejemplos" {
     assert.equals(100, contenedorPortuario.peso())
     assert.equals(0, contenedorPortuario.nivelPeligrosidad())
   }
+
+  test "contenedor con Knight Rider y 50kg de arena" {
+    arenaAGranel.kilogramos(50)
+    contenedorPortuario.cosas(#{knightRider, arenaAGranel})
+
+    assert.equals(650, contenedorPortuario.peso())
+    assert.equals(10, contenedorPortuario.nivelPeligrosidad())
+  }
+
+  test "embalaje knightrider" {
+    embalajeDeSeguridad.embalar(knightRider)
+
+    assert.equals(500, embalajeDeSeguridad.peso())
+    assert.equals(5, embalajeDeSeguridad.nivelPeligrosidad())
+  }
+
+  test "embalaje bumblebee auto" {
+    embalajeDeSeguridad.embalar(bumblebee)
+
+    assert.equals(800, embalajeDeSeguridad.peso())
+    assert.equals(7.5, embalajeDeSeguridad.nivelPeligrosidad())
+  }
+
+  test "algo que pesa entre dos valores" {
+    camion.cargar(bumblebee)
+    paqueteDeLadrillos.cantidad(300)
+    camion.cargar(paqueteDeLadrillos)
+
+    assert.that(camion.hayAlgoQuePesaEntre(5,700))
+    assert.that(camion.hayAlgoQuePesaEntre(5,1000))
+    assert.notThat(camion.hayAlgoQuePesaEntre(900,1000))
+  }
 }
