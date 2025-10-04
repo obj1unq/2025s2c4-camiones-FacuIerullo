@@ -163,7 +163,7 @@ describe "Testeo de ejemplos" {
     assert.equals(#{600,800}, camion.pesosDeLaCarga())
   }
 
-  test "bultos" {
+  test "bultos caso 1" {
     contenedorPortuario.cosas(#{knightRider, bumblebee})
     embalajeDeSeguridad.embalar(residuosRadioactivos)
     paqueteDeLadrillos.cantidad(50)
@@ -174,6 +174,60 @@ describe "Testeo de ejemplos" {
     camion.cargar(bateriaAntiaerea)
 
     assert.equals(9, camion.bultosDeLaCarga())
+  }
+
+  test "bultos caso 2" {
+    paqueteDeLadrillos.cantidad(150)
+    bateriaAntiaerea.cargarMisiles()
+    camion.cargar(paqueteDeLadrillos)
+    camion.cargar(bateriaAntiaerea)
+    camion.cargar(contenedorPortuario)
+
+    assert.equals(5, camion.bultosDeLaCarga())
+  }
+
+  test "bultos caso 3" {
+    paqueteDeLadrillos.cantidad(350)
+    camion.cargar(arenaAGranel)
+    camion.cargar(paqueteDeLadrillos)
+
+    assert.equals(4, camion.bultosDeLaCarga())
+  }
+
+  test "accidente caso1" {
+    contenedorPortuario.cosas(#{knightRider, bumblebee})
+    residuosRadioactivos.kilogramos(30)
+    embalajeDeSeguridad.embalar(residuosRadioactivos)
+    arenaAGranel.kilogramos(50)
+    paqueteDeLadrillos.cantidad(100)
+    bateriaAntiaerea.cargarMisiles()
+    camion.cargar(contenedorPortuario)
+    camion.cargar(embalajeDeSeguridad)
+    camion.cargar(arenaAGranel)
+    camion.cargar(paqueteDeLadrillos)
+    camion.cargar(bateriaAntiaerea)
+    camion.accidente()
+
+    assert.notThat(bumblebee.esAuto())
+    assert.equals(30, embalajeDeSeguridad.peso())
+    assert.equals(70, arenaAGranel.peso())
+    assert.equals(88, paqueteDeLadrillos.cantidad())
+    assert.notThat(bateriaAntiaerea.tieneMisiles())
+  }
+
+  test "accidente caso2" {
+    bumblebee.transformarse()
+    residuosRadioactivos.kilogramos(30)
+    paqueteDeLadrillos.cantidad(10)
+    camion.cargar(bumblebee)
+    camion.cargar(residuosRadioactivos)
+    camion.cargar(paqueteDeLadrillos)
+    camion.accidente()
+
+    assert.that(bumblebee.esAuto())
+    assert.equals(45, residuosRadioactivos.peso())
+    assert.equals(0, paqueteDeLadrillos.cantidad())
+    assert.notThat(bateriaAntiaerea.tieneMisiles())
   }
 
 }

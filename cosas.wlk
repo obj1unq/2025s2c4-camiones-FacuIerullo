@@ -2,6 +2,7 @@ object knightRider {
   method bulto() { return 1 }
 	method peso() { return 500 }
 	method nivelPeligrosidad() { return 10 }
+  method accidente() { }
 }
 
 object arenaAGranel {
@@ -10,6 +11,7 @@ object arenaAGranel {
   method bulto() { return 1 }
   method peso() { return kilogramos }
   method nivelPeligrosidad() { return 1 }
+  method accidente() { kilogramos = kilogramos + 20  }
 }
 
 object bumblebee {
@@ -20,11 +22,14 @@ object bumblebee {
   method transformarse() {
 	if(self.esAuto()){
 		estado = "robot"
-	}
+	} else{
+    estado = "auto"
+  }
   }
   method bulto() { return 2 }
   method peso() { return 800 }
   method nivelPeligrosidad() { return if(self.esAuto()) 15 else 30 }
+  method accidente() { self.transformarse() }
 }
 
 object paqueteDeLadrillos {
@@ -33,10 +38,17 @@ object paqueteDeLadrillos {
   method bulto(){ return if(cantidad < 100) 1 else if(cantidad > 100 && cantidad < 300) 2 else 3}
   method peso() { return cantidad * 2}
   method nivelPeligrosidad() { return 2 }
+  method accidente(){
+    if(cantidad > 12){
+      cantidad = cantidad - 12
+    } else{
+      cantidad = 0
+    }
+  }
 }
 
 object bateriaAntiaerea {
-	var tieneMisiles = false
+	var property tieneMisiles = false
 
 	method cargarMisiles() {
 		tieneMisiles = true
@@ -45,6 +57,7 @@ object bateriaAntiaerea {
   method bulto(){ return if(tieneMisiles) 2 else 1}
 	method peso() { return if (tieneMisiles) 300 else 200 }
 	method nivelPeligrosidad() {	return if (tieneMisiles) 100 else 0 }
+  method accidente() { tieneMisiles = false }
 }
 
 object residuosRadioactivos {
@@ -52,6 +65,7 @@ object residuosRadioactivos {
   method bulto() { return 1 }
   method peso() { return kilogramos }
   method nivelPeligrosidad() { return 200 }
+  method accidente(){ kilogramos = kilogramos + 15}
 }
 
 object contenedorPortuario {
@@ -65,6 +79,9 @@ object contenedorPortuario {
     const cosasPeligrosidad = cosas.map({cosa => cosa.nivelPeligrosidad()})
     return if(cosas.size() >= 1)cosasPeligrosidad.max() else 0
   }
+  method accidente(){
+    return cosas.forEach( {cosa => cosa.accidente()} )
+  }
 }
 
 object embalajeDeSeguridad {
@@ -77,4 +94,5 @@ object embalajeDeSeguridad {
 
   method peso(){ return cosaEmbalada.peso()}
   method nivelPeligrosidad(){ return cosaEmbalada.nivelPeligrosidad() / 2}
+  method accidente(){}
 }
