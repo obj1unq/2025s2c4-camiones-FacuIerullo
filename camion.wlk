@@ -29,8 +29,7 @@ object camion {
 	}
 
 	method pesoTotal(){
-		var suma = 0
-		cosas.forEach({ cosa => suma = suma + cosa.peso()})
+		const suma = cosas.sum({ cosa => cosa.peso()})
 		return suma + tara
 	}
 
@@ -56,5 +55,19 @@ object camion {
 
 	method hayAlgoQuePesaEntre(minimo, maximo) {
 	  return cosas.any({ cosa => (cosa.peso() > minimo && cosa.peso() < maximo) })
+	}
+
+	method laCosaMasPesada(){
+		const pesos = cosas.map({ cosa => cosa.nivelPeligrosidad() })
+		const pesoMaximo = pesos.max()
+		return cosas.find({ cosa => cosa.nivelPeligrosidad() == pesoMaximo })
+	}
+
+	method pesosDeLaCarga(){
+		return cosas.map({ cosa => cosa.peso()}).asSet()
+	}
+
+	method bultosDeLaCarga(){
+		return cosas.sum({ cosa => cosa.bulto() })
 	}
 }

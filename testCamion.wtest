@@ -151,7 +151,7 @@ describe "Testeo de ejemplos" {
     assert.equals(7.5, embalajeDeSeguridad.nivelPeligrosidad())
   }
 
-  test "algo que pesa entre dos valores" {
+  test "algo que pesa entre dos valores, cosa mas pesada, peso de cada cosa" {
     camion.cargar(bumblebee)
     paqueteDeLadrillos.cantidad(300)
     camion.cargar(paqueteDeLadrillos)
@@ -159,5 +159,21 @@ describe "Testeo de ejemplos" {
     assert.that(camion.hayAlgoQuePesaEntre(5,700))
     assert.that(camion.hayAlgoQuePesaEntre(5,1000))
     assert.notThat(camion.hayAlgoQuePesaEntre(900,1000))
+    assert.equals(bumblebee, camion.laCosaMasPesada())
+    assert.equals(#{600,800}, camion.pesosDeLaCarga())
   }
+
+  test "bultos" {
+    contenedorPortuario.cosas(#{knightRider, bumblebee})
+    embalajeDeSeguridad.embalar(residuosRadioactivos)
+    paqueteDeLadrillos.cantidad(50)
+    camion.cargar(contenedorPortuario)
+    camion.cargar(embalajeDeSeguridad)
+    camion.cargar(paqueteDeLadrillos)
+    camion.cargar(arenaAGranel)
+    camion.cargar(bateriaAntiaerea)
+
+    assert.equals(9, camion.bultosDeLaCarga())
+  }
+
 }

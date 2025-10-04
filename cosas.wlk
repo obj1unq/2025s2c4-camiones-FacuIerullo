@@ -1,4 +1,5 @@
 object knightRider {
+  method bulto() { return 1 }
 	method peso() { return 500 }
 	method nivelPeligrosidad() { return 10 }
 }
@@ -6,6 +7,7 @@ object knightRider {
 object arenaAGranel {
   var property kilogramos = 1
 
+  method bulto() { return 1 }
   method peso() { return kilogramos }
   method nivelPeligrosidad() { return 1 }
 }
@@ -20,13 +22,15 @@ object bumblebee {
 		estado = "robot"
 	}
   }
-
+  method bulto() { return 2 }
   method peso() { return 800 }
   method nivelPeligrosidad() { return if(self.esAuto()) 15 else 30 }
 }
 
 object paqueteDeLadrillos {
   var property cantidad = 1
+
+  method bulto(){ return if(cantidad < 100) 1 else if(cantidad > 100 && cantidad < 300) 2 else 3}
   method peso() { return cantidad * 2}
   method nivelPeligrosidad() { return 2 }
 }
@@ -38,12 +42,14 @@ object bateriaAntiaerea {
 		tieneMisiles = true
 	}
 
+  method bulto(){ return if(tieneMisiles) 2 else 1}
 	method peso() { return if (tieneMisiles) 300 else 200 }
 	method nivelPeligrosidad() {	return if (tieneMisiles) 100 else 0 }
 }
 
 object residuosRadioactivos {
   var property kilogramos = 1
+  method bulto() { return 1 }
   method peso() { return kilogramos }
   method nivelPeligrosidad() { return 200 }
 }
@@ -51,12 +57,9 @@ object residuosRadioactivos {
 object contenedorPortuario {
   var property cosas = #{}
 
-  method pesoTotalDeCosas(){
-	var suma = 0
-	cosas.forEach({cosas => suma = suma + cosas.peso()})
-	return suma
-  }
+  method pesoTotalDeCosas(){ return cosas.sum({ cosa => cosa.peso() }) }
 
+  method bulto(){ return cosas.sum({ cosa => cosa.bulto() }) + 1}
   method peso() {return 100 + self.pesoTotalDeCosas()}
   method nivelPeligrosidad(){
     const cosasPeligrosidad = cosas.map({cosa => cosa.nivelPeligrosidad()})
@@ -65,6 +68,7 @@ object contenedorPortuario {
 }
 
 object embalajeDeSeguridad {
+  const property bulto = 2
 	var cosaEmbalada = null
   
   method embalar(cosa) {
