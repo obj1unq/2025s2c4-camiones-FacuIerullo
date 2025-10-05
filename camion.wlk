@@ -1,4 +1,8 @@
 import cosas.*
+import destinos.*
+import rutas.*
+
+
 
 object camion {
 	const property cosas = #{}
@@ -73,5 +77,12 @@ object camion {
 
 	method accidente(){
 		return cosas.forEach({ cosa => cosa.accidente()})
+	}
+
+	method transportar(destino, camino){
+		if(camino.requerimiento(self)){
+			destino.descargarCamion(self)
+			cosas.clear()
+		}
 	}
 }
